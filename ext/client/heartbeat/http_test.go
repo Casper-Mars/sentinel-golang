@@ -6,7 +6,7 @@ import (
 )
 
 func TestSimpleHttpHeartBeatSender_SendHeartbeat(t *testing.T) {
-	sender := NewSimpleHttpHeartbeatSender(&transport.Config{
+	config := transport.Config{
 		Server:          "http://localhost:8080",
 		Port:            "10086",
 		IntervalMs:      2000,
@@ -16,7 +16,15 @@ func TestSimpleHttpHeartBeatSender_SendHeartbeat(t *testing.T) {
 		AppName:         "test-sender",
 		Hostname:        "test-sender",
 		SentinelVersion: "1.8.0",
-	})
+	}
+	sender := NewSimpleHttpHeartbeatSender(&config, NewMessage(
+		config.Port,
+		WithApp(config.AppName),
+		WithAppType(config.AppType),
+		WithHostname(config.Hostname),
+		WithSentinelVersion(config.SentinelVersion),
+		WithIp(config.ClientIp),
+	))
 	err := sender.SendHeartbeat()
 	if err != nil {
 		t.Error(err)

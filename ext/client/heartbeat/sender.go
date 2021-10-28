@@ -1,8 +1,15 @@
 package heartbeat
 
 import (
+	"github.com/alibaba/sentinel-golang/ext/client/transport"
 	"strconv"
 	"time"
+)
+
+type SenderType int
+
+const (
+	HTTP SenderType = iota
 )
 
 type MsgOption func(m Message)
@@ -58,4 +65,13 @@ func WithSentinelVersion(v string) MsgOption {
 type Sender interface {
 	SendHeartbeat() error
 	IntervalMs() time.Duration
+}
+
+func NewSender(senderType SenderType, conf *transport.Config, msg Message) Sender {
+	var sender Sender
+	switch senderType {
+	case HTTP:
+		sender = NewSimpleHttpHeartbeatSender(conf, msg)
+	}
+	return sender
 }

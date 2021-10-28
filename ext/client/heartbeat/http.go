@@ -13,17 +13,10 @@ type SimpleHttpHeartBeatSender struct {
 	msg    Message
 }
 
-func NewSimpleHttpHeartbeatSender(config *transport.Config) *SimpleHttpHeartBeatSender {
+func NewSimpleHttpHeartbeatSender(config *transport.Config, msg Message) *SimpleHttpHeartBeatSender {
 	return &SimpleHttpHeartBeatSender{
 		config: config,
-		msg: NewMessage(
-			config.Port,
-			WithIp(config.ClientIp),
-			WithHostname(config.Hostname),
-			WithApp(config.AppName),
-			WithAppType(config.AppType),
-			WithSentinelVersion(config.SentinelVersion),
-		),
+		msg:    msg,
 	}
 }
 

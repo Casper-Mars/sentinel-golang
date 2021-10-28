@@ -8,7 +8,14 @@ import (
 )
 
 func StartHeartbeat(ctx context.Context, conf *transport.Config) error {
-	sender := NewSimpleHttpHeartbeatSender(conf)
+	sender := NewSender(HTTP, conf, NewMessage(
+		conf.Port,
+		WithApp(conf.AppName),
+		WithAppType(conf.AppType),
+		WithHostname(conf.Hostname),
+		WithSentinelVersion(conf.SentinelVersion),
+		WithIp(conf.ClientIp),
+	))
 	err := sender.SendHeartbeat()
 	if err != nil {
 		return err
