@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func StartHeartbeat(ctx context.Context, conf *transport.Config) error {
+func Start(ctx context.Context, conf *transport.Config) error {
 	sender := NewSender(HTTP, conf, NewMessage(
 		conf.Port,
 		WithApp(conf.AppName),
