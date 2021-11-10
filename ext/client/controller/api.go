@@ -2,15 +2,15 @@ package controller
 
 import (
 	"encoding/json"
+
 	"github.com/alibaba/sentinel-golang/ext/client/model/api"
-	"net/http"
 )
 
 func init() {
-	http.HandleFunc("/api", apiHandler)
+	addApi("/api", apiHandler)
 }
 
-func apiHandler(w http.ResponseWriter, r *http.Request) {
+func apiHandler(req *request) *response {
 	result := []api.Api{
 		{
 			Url:  "/getRules",
@@ -27,12 +27,7 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	marshal, err := json.Marshal(result)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+		return internalErr(nil)
 	}
-	w.WriteHeader(http.StatusOK)
-	_, err = w.Write(marshal)
-	if err != nil {
-		//todo: handle error
-	}
+	return success(marshal)
 }

@@ -1,5 +1,3 @@
 package sdk
 
-type Config struct {
-
-}
+type Config struct{}

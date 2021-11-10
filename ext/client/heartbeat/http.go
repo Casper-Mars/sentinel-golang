@@ -2,10 +2,11 @@ package heartbeat
 
 import (
 	"fmt"
-	"github.com/alibaba/sentinel-golang/ext/client/transport"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/alibaba/sentinel-golang/ext/client/transport"
 )
 
 type SimpleHttpHeartBeatSender struct {

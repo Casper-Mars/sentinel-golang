@@ -1,8 +1,9 @@
 package heartbeat
 
 import (
-	"github.com/alibaba/sentinel-golang/ext/client/transport"
 	"testing"
+
+	"github.com/alibaba/sentinel-golang/ext/client/transport"
 )
 
 func TestSimpleHttpHeartBeatSender_SendHeartbeat(t *testing.T) {

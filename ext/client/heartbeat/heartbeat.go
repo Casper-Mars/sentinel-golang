@@ -2,9 +2,10 @@ package heartbeat
 
 import (
 	"context"
+	"time"
+
 	"github.com/alibaba/sentinel-golang/ext/client/transport"
 	"github.com/alibaba/sentinel-golang/logging"
-	"time"
 )
 
 func Start(ctx context.Context, conf *transport.Config) error {

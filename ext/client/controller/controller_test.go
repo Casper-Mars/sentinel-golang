@@ -2,14 +2,14 @@ package controller
 
 import (
 	"context"
+	"testing"
+
 	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
 	"github.com/alibaba/sentinel-golang/ext/client/heartbeat"
 	"github.com/alibaba/sentinel-golang/ext/client/transport"
-	"testing"
 )
 
 func TestController(t *testing.T) {
-
 	circuitbreaker.LoadRules([]*circuitbreaker.Rule{
 		{
 			Resource:       "test",

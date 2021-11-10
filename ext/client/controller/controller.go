@@ -3,10 +3,13 @@ package controller
 import (
 	"context"
 	"fmt"
-	"github.com/alibaba/sentinel-golang/ext/client/transport"
 	"log"
 	"net/http"
+
+	"github.com/alibaba/sentinel-golang/ext/client/transport"
 )
+
+type handler func(req *request) *response
 
 func Start(ctx context.Context, conf *transport.Config) {
 	go func() {
@@ -15,4 +18,18 @@ func Start(ctx context.Context, conf *transport.Config) {
 			log.Println(err)
 		}
 	}()
+}
+
+func addApi(pattern string, h handler) {
+	http.HandleFunc(pattern, func(writer http.ResponseWriter, r *http.Request) {
+		req := newRequest(r)
+		resp := h(req)
+		writer.WriteHeader(resp.status)
+		if resp.data != nil {
+			_, err := writer.Write(resp.data)
+			if err != nil {
+				// todo: handle error
+			}
+		}
+	})
 }

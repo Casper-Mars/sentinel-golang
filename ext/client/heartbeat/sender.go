@@ -1,9 +1,10 @@
 package heartbeat
 
 import (
-	"github.com/alibaba/sentinel-golang/ext/client/transport"
 	"strconv"
 	"time"
+
+	"github.com/alibaba/sentinel-golang/ext/client/transport"
 )
 
 type SenderType int
