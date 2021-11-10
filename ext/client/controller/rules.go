@@ -13,16 +13,15 @@ const (
 	degradeType = "degrade"
 )
 
-func registryRuleController(mux *http.ServeMux) {
-
-	mux.HandleFunc("/getRules", func(writer http.ResponseWriter, request *http.Request) {
+func init() {
+	http.HandleFunc("/getRules", func(writer http.ResponseWriter, request *http.Request) {
 		ruleType := request.URL.Query().Get("type")
 		switch ruleType {
 		case degradeType:
 			degradeHandler(writer, request)
 		}
 	})
-	mux.HandleFunc("/setRules", func(writer http.ResponseWriter, request *http.Request) {
+	http.HandleFunc("/setRules", func(writer http.ResponseWriter, request *http.Request) {
 		all, err := ioutil.ReadAll(request.Body)
 		if err != nil {
 			fmt.Println(err)

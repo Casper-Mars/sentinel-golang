@@ -9,10 +9,8 @@ import (
 )
 
 func Start(ctx context.Context, conf *transport.Config) {
-	mux := http.NewServeMux()
-	registryRuleController(mux)
 	go func() {
-		err := http.ListenAndServe(fmt.Sprintf(":%s", conf.Port), mux)
+		err := http.ListenAndServe(fmt.Sprintf(":%s", conf.Port), nil)
 		if err != nil {
 			log.Println(err)
 		}
