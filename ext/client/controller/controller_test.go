@@ -2,6 +2,10 @@ package controller
 
 import (
 	"context"
+	sentinel "github.com/alibaba/sentinel-golang/api"
+	config2 "github.com/alibaba/sentinel-golang/core/config"
+	"github.com/alibaba/sentinel-golang/logging"
+	"net/http"
 	"testing"
 
 	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
@@ -10,6 +14,10 @@ import (
 )
 
 func TestController(t *testing.T) {
+	defaultConfig := config2.NewDefaultConfig()
+	defaultConfig.Sentinel.App.Name = "test-dashboard"
+	defaultConfig.Sentinel.Log.Logger = logging.NewConsoleLogger()
+	sentinel.InitWithConfig(defaultConfig)
 	circuitbreaker.LoadRules([]*circuitbreaker.Rule{
 		{
 			Resource:       "test",
@@ -39,5 +47,25 @@ func TestController(t *testing.T) {
 	}
 	Start(context.Background(), &config)
 	heartbeat.Start(context.Background(), &config)
+	go startTestServer()
 	select {}
+}
+
+func startTestServer() {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/hello", func(writer http.ResponseWriter, r *http.Request) {
+		writer.WriteHeader(http.StatusOK)
+		writer.Header().Add("Content-Type", "application/json")
+		entry, blockError := sentinel.Entry("test")
+		if blockError != nil {
+			writer.Write([]byte(blockError.Error()))
+			return
+		}
+		defer entry.Exit()
+		writer.Write([]byte(`{"code":0,"message":"ok"}`))
+	})
+	err := http.ListenAndServe(":9090", mux)
+	if err != nil {
+		panic(err)
+	}
 }
