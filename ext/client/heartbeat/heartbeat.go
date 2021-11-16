@@ -2,13 +2,13 @@ package heartbeat
 
 import (
 	"context"
+	"github.com/alibaba/sentinel-golang/ext/client/config"
 	"time"
 
-	"github.com/alibaba/sentinel-golang/ext/client/transport"
 	"github.com/alibaba/sentinel-golang/logging"
 )
 
-func Start(ctx context.Context, conf *transport.Config) error {
+func Start(ctx context.Context, conf *config.Config) error {
 	sender := NewSender(HTTP, conf, NewMessage(
 		conf.Port,
 		WithApp(conf.AppName),

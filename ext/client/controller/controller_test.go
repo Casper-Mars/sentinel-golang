@@ -4,13 +4,13 @@ import (
 	"context"
 	sentinel "github.com/alibaba/sentinel-golang/api"
 	config2 "github.com/alibaba/sentinel-golang/core/config"
+	"github.com/alibaba/sentinel-golang/ext/client/config"
 	"github.com/alibaba/sentinel-golang/logging"
 	"net/http"
 	"testing"
 
 	"github.com/alibaba/sentinel-golang/core/circuitbreaker"
 	"github.com/alibaba/sentinel-golang/ext/client/heartbeat"
-	"github.com/alibaba/sentinel-golang/ext/client/transport"
 )
 
 func TestController(t *testing.T) {
@@ -34,7 +34,7 @@ func TestController(t *testing.T) {
 		},
 	})
 
-	config := transport.Config{
+	conf := config.Config{
 		Server:          "http://localhost:8080",
 		Port:            "10086",
 		IntervalMs:      2000,
@@ -45,8 +45,8 @@ func TestController(t *testing.T) {
 		Hostname:        "test-sender",
 		SentinelVersion: "1.8.0",
 	}
-	Start(context.Background(), &config)
-	heartbeat.Start(context.Background(), &config)
+	Start(context.Background(), &conf)
+	heartbeat.Start(context.Background(), &conf)
 	go startTestServer()
 	select {}
 }

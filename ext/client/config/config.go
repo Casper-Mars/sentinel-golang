@@ -1,4 +1,4 @@
-package transport
+package config
 
 type Config struct {
 	Server          string `yaml:"server" json:"server"`
